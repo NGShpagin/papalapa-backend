@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class FeedbackDto {
+public class WBFeedbackDto {
     private String id; // ID отзыва
     private String text; // Текст отзыва
     private String pros; // Достоинства товара
@@ -17,6 +17,6 @@ public class FeedbackDto {
     private Boolean wasViewed; // Просмотрен ли отзыв
     private String userName; // Имя автора отзыва
     private String subjectName; // Название предмета
-    private 
-    private List<PhotoDto> photoLinks;
+    private WBProductDto productDetails;
+    private List<WBPhotoDto> photoLinks;
 }

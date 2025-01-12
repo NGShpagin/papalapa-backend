@@ -1,2 +1,29 @@
-package version_1.dto;public class ProductDto {
+package version_1.dto;
+
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ProductDto {
+    private Long id;
+    private String title;
+    private String description;
+    private Integer minAge;
+    private Integer maxAge;
+    private String colorName;
+    private String colorValue;
+    private String image;
+    private String wbUrl;
+    private Double price;
+    private Integer quantity;
+    private String composition;
+    private String size;
+//    private ProductCategoryShortDto category;
 }

@@ -1,18 +1,20 @@
 package version_1.dto;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import version_1.model.Product;
 
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductCategoryDto {
+public class ProductShortInfoDto {
     private Long id;
     private String title;
-    private List<ProductShortInfoDto> colorList;
+    private String colorName;
+    private String colorValue;
+    private String wbUrl;
+    private Double price;
+    private List<ProductImageDto> imageList;
 }
