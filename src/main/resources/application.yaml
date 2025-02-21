@@ -1,3 +1,5 @@
+server:
+  port: 8280
 spring:
 #  local DataBase
 #  datasource:

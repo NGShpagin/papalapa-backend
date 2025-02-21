@@ -15,6 +15,8 @@
 #ENTRYPOINT ["nginx", "-g", "daemon off;"]
 
 FROM openjdk:23
+MAINTAINER NikShpag
+WORKDIR /papalapa/back
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
