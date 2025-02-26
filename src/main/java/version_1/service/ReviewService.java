@@ -1,9 +1,7 @@
 package version_1.service;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import version_1.dto.ReviewDto;
 import version_1.dto.WBResponseDtos.WBFeedbackDto;
 import version_1.dto.WBResponseDtos.WBReviewResponseDto;
 import version_1.model.Review;
@@ -18,8 +16,6 @@ public class ReviewService {
 
     @Autowired
     ProductRepository productRepository;
-
-    private final ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
     WBProvider wbProvider;

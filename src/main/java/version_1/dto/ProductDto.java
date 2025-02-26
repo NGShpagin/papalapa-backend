@@ -1,16 +1,8 @@
 package version_1.dto;
 
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class ProductDto {
     private Long id;
     private String title;

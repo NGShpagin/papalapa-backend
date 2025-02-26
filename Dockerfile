@@ -1,3 +1,4 @@
+# БД PostgresQL
 #FROM postgres:latest
 #LABEL authors="nikolajspagin"
 #ENV POSTGRES_DB papalapa
@@ -15,8 +16,11 @@
 #ENTRYPOINT ["nginx", "-g", "daemon off;"]
 
 FROM openjdk:23
-MAINTAINER NikShpag
-WORKDIR /papalapa/back
+LABEL authors="nikolajspagin"
+ADD https://storage.yandexcloud.net/cloud-certs/CA.pem /usr/local/share/ca-certificates/root.crt
+RUN chmod "0644" /usr/local/share/ca-certificates/root.crt
+RUN update-ca-certificates
+#WORKDIR /papalapa/back
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]

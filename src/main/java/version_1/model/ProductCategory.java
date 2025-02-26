@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "product_category")
 @Data
-//@AllArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 public class ProductCategory {
 

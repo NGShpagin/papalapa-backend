@@ -7,9 +7,7 @@ import org.springframework.stereotype.Service;
 import version_1.dto.NewProductCategoryDto;
 import version_1.model.ProductCategory;
 import version_1.repository.ProductCategoryRepository;
-
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Log4j2
 @Service

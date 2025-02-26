@@ -1,15 +1,12 @@
 package version_1.dto;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import version_1.dto.WBResponseDtos.WBProductDto;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class ReviewDto {
     private Long id;
     private String content;

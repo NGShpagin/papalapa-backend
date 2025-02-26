@@ -1,9 +1,9 @@
 services:
   backend:
-    image: localhost:3000/api:latest
+    image: papalapa/backend:latest
     restart: always
     container_name: papalapa-backend
     ports:
       - "3002:3000"
     networks:
-      - myNetwork
+      - my_network

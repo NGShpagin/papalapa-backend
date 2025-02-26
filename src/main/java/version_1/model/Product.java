@@ -62,7 +62,7 @@ public class Product {
     private Double price;
 
     /**
-     * url-адрес изделия на wb
+     * Url-адрес изделия на wb
      */
     @Column(name = "wb_url", length = 1000)
     private String wbUrl;

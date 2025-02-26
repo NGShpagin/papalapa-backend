@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import version_1.dto.NewProductCategoryDto;
 import version_1.dto.ProductCategoryDto;
-import version_1.dto.ReviewDto;
 import version_1.model.ProductCategory;
 import version_1.repository.ProductCategoryRepository;
 import version_1.service.ProductCategoryService;

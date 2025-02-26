@@ -6,11 +6,12 @@ spring:
 #    url: jdbc:postgresql://localhost:5433/papalapa
 #    username: user
 #    password: secret
+
 # Yandex Cloud DataBase
   datasource:
     url: jdbc:postgresql://rc1a-rx8wrb8e83hvov0h.mdb.yandexcloud.net:6432/papalapa-site-db?targetServerType=master&ssl=true&sslmode=verify-full
     username: user
-    password: 12345678
+    password: papalapa
   jpa:
     hibernate:
       ddl-auto: update

@@ -13,9 +13,7 @@ import version_1.dto.ReviewDto;
 import version_1.model.Review;
 import version_1.repository.ReviewRepository;
 import version_1.service.ReviewService;
-
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/papalapa/reviews")
