@@ -34,7 +34,7 @@ public class ReviewService {
             review.setReviewerName(feedback.getUserName());
             review.setContent(feedback.getPros());
             review.setProduct(productRepository.findProductByTitle(feedback.getProductDetails().getSupplierArticle()));
-            review.setImageUrl(feedback.getPhotoLinks().getFirst().getMiniSize());
+            if (!feedback.getPhotoLinks().isEmpty()) review.setImageUrl(feedback.getPhotoLinks().get(0).getMiniSize());
             review.setRating(feedback.getProductValuation());
             reviewList.add(review);
         });

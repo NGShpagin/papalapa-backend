@@ -19,7 +19,6 @@ FROM openjdk:23
 LABEL authors="nikolajspagin"
 ADD https://storage.yandexcloud.net/cloud-certs/CA.pem /usr/local/share/ca-certificates/root.crt
 RUN chmod "0644" /usr/local/share/ca-certificates/root.crt
-RUN update-ca-certificates
 #WORKDIR /papalapa/back
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} app.jar
