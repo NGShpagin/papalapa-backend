@@ -19,8 +19,8 @@ FROM openjdk:23
 LABEL authors="nikolajspagin"
 ADD https://storage.yandexcloud.net/cloud-certs/CA.pem /root/.postgresql/root.crt
 RUN chmod "0644" /root/.postgresql/root.crt
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
-#COPY target/*.jar /opt/app/app.jar
+#ARG JAR_FILE=target/*.jar
+#COPY ${JAR_FILE} app.jar
+COPY target/*.jar /opt/app/app.jar
 WORKDIR /opt/app
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
