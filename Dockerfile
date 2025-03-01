@@ -32,11 +32,38 @@
 #
 # Package stage
 #
-FROM openjdk:23
-LABEL authors="nikolajspagin"
+#FROM openjdk:23
+#LABEL authors="nikolajspagin"
 #ADD https://storage.yandexcloud.net/cloud-certs/CA.pem /root/.postgresql/root.crt
 #RUN chmod "0644" /root/.postgresql/root.crt
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
-WORKDIR /opt/app
-ENTRYPOINT ["java","-jar","app.jar"]
+#WORKDIR /home/user/papalapa/backend
+#ARG JAR_FILE=target/*.jar
+#COPY ${JAR_FILE} /opt/app/app.jar
+#WORKDIR /opt/app
+#ENTRYPOINT ["java","-jar","app.jar"]
+
+#FROM maven:3.9.9 AS build
+#COPY . /app/backend
+#COPY pom.xml /app/backend/pom.xml
+#WORKDIR /app/backend
+#RUN mvn clean package -DskipTests
+#FROM openjdk:23
+#LABEL authors="nikolajspagin"
+#ARG JAR_FILE=/app/backend/target/*.jar
+#COPY --from=build ${JAR_FILE} /opt/app/app.jar
+#WORKDIR /opt/app
+#CMD ["java", "-jar", "/opt/app/app.jar"]
+
+FROM maven:3.6.3 AS build
+RUN mkdir /app
+WORKDIR /app
+COPY . /app
+RUN mvn clean package -DskipTests
+
+FROM openjdk:23
+ADD https://storage.yandexcloud.net/cloud-certs/CA.pem /root/.postgresql/root.crt
+RUN chmod "0644" /root/.postgresql/root.crt
+RUN mkdir /app
+COPY ./target/papalapa-0.0.1-SNAPSHOT.jar /app/papalapa-0.0.1-SNAPSHOT.jar
+WORKDIR /app
+CMD "java" "-jar" "papalapa-0.0.1-SNAPSHOT.jar"
