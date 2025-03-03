@@ -79,8 +79,8 @@ public class ProductController {
                     content = @Content)})
     @GetMapping
     public ResponseEntity<List<ProductShortInfoDto>> getAllProducts(@RequestParam(required = false) String categoryId,
-                                                           @RequestParam(defaultValue = "0") int pageNumber,
-                                                           @RequestParam(defaultValue = "5") int pageSize) {
+                                                           @RequestParam(required = false, defaultValue = "0") int pageNumber,
+                                                           @RequestParam(required = false, defaultValue = "5") int pageSize) {
         List<Product> products;
         if (categoryId == null)
             products = productRepository.findAll(PageRequest.of(pageNumber, pageSize)).getContent();
