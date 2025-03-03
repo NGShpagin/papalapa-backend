@@ -81,6 +81,9 @@ RUN adduser \
     appuser
 USER appuser
 
+ADD https://storage.yandexcloud.net/cloud-certs/CA.pem /root/.postgresql/root.crt
+RUN chmod "0644" /root/.postgresql/root.crt
+
 # Copy the executable from the "package" stage.
 COPY --from=extract build/target/extracted/dependencies/ ./
 COPY --from=extract build/target/extracted/spring-boot-loader/ ./
