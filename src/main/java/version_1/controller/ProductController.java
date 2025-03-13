@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import version_1.dto.NewProductDto;
 import version_1.dto.ProductDto;
 import version_1.dto.ProductShortInfoDto;
+import version_1.dto.WBResponseDtos.WBItemDto;
+import version_1.dto.WBResponseDtos.WBGoodsResponseDto;
 import version_1.model.Product;
 import version_1.repository.ProductRepository;
 import version_1.service.ProductService;
@@ -79,8 +81,8 @@ public class ProductController {
                     content = @Content)})
     @GetMapping
     public ResponseEntity<List<ProductShortInfoDto>> getAllProducts(@RequestParam(required = false) String categoryId,
-                                                           @RequestParam(required = false, defaultValue = "0") int pageNumber,
-                                                           @RequestParam(required = false, defaultValue = "5") int pageSize) {
+                                                                    @RequestParam(required = false, defaultValue = "0") int pageNumber,
+                                                                    @RequestParam(required = false, defaultValue = "5") int pageSize) {
         List<Product> products;
         if (categoryId == null)
             products = productRepository.findAll(PageRequest.of(pageNumber, pageSize)).getContent();
@@ -122,16 +124,28 @@ public class ProductController {
     @Operation(summary = "Update product partially", description = "Обновить изделие частично")
     @PatchMapping(path = "/{id}")
     public ResponseEntity<?> updateProductPartially(@PathVariable long id, @RequestBody ProductDto product) {
-        Product updatedProduct;
-        product.setId(id);
         try {
-            updatedProduct = productService.updatePartially(product);
+            product.setId(id);
+            Product updatedProduct = productService.updatePartially(product);
+            return ResponseEntity.status(HttpStatus.OK).body(modelMapper.map(updatedProduct, ProductDto.class));
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(
                     new ResponseMessage(HttpStatus.NOT_FOUND.value(), e.getMessage()),
                     HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(modelMapper.map(updatedProduct, ProductDto.class));
+    }
+
+    @Operation(summary = "Get products with price", description = "Получить карточки товара с ценами")
+    @GetMapping(path = "/wb-items")
+    @CrossOrigin
+    public ResponseEntity<?> getAllProductsWithPrice(@RequestParam Integer filterNmID) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(productService.getWbItemByNmId(filterNmID));
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(
+                    new ResponseMessage(HttpStatus.NOT_FOUND.value(), e.getMessage()),
+                    HttpStatus.NOT_FOUND);
+        }
     }
 
 }

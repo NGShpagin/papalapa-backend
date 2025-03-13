@@ -1,13 +1,17 @@
 package version_1.service;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.Null;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import version_1.dto.NewProductDto;
 import version_1.dto.ProductDto;
+import version_1.dto.WBResponseDtos.WBGoodsResponseDto;
+import version_1.dto.WBResponseDtos.WBItemDto;
 import version_1.model.Product;
 import version_1.model.ProductCategory;
+import version_1.providers.WBProvider;
 import version_1.repository.ProductCategoryRepository;
 import version_1.repository.ProductRepository;
 import java.time.LocalDateTime;
@@ -18,6 +22,9 @@ public class ProductService {
 
     @Autowired
     ProductRepository productRepository;
+
+    @Autowired
+    WBProvider wbProvider;
 
     @Autowired
     ProductCategoryRepository productCategoryRepository;
@@ -69,6 +76,15 @@ public class ProductService {
             return productRepository.save(product);
         } catch (NoSuchElementException e) {
             throw new RuntimeException("Указанная категория не найдена");
+        }
+    }
+
+    public WBItemDto getWbItemByNmId(int filterNmId) {
+        try {
+            WBGoodsResponseDto wbGoodsResponseDto = wbProvider.getItemListWithPrice(filterNmId);
+            return wbGoodsResponseDto.getData().getListGoods().get(0);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
         }
     }
 }
