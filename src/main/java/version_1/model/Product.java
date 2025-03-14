@@ -26,6 +26,12 @@ public class Product {
     private String title;
 
     /**
+     * Артикул WB
+     */
+    @Column(name = "nm_id", nullable = true)
+    private Long nmId;
+
+    /**
      * Описание
      */
     @Column(name = "description")

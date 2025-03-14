@@ -7,6 +7,7 @@ import java.util.List;
 public class ProductShortInfoDto {
     private Long id;
     private String title;
+    private Long nmId;
     private String colorName;
     private String colorValue;
     private String wbUrl;
