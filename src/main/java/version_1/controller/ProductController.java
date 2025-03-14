@@ -137,7 +137,7 @@ public class ProductController {
     @Operation(summary = "Get products with price", description = "Получить карточки товара с ценами")
     @GetMapping(path = "/wb-items")
     @CrossOrigin
-    public ResponseEntity<?> getAllProductsWithPrice(@RequestParam Integer filterNmID) {
+    public ResponseEntity<?> getAllProductsWithPrice(@RequestParam(value = "filterNmID") Integer filterNmID) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(productService.getWbItemByNmId(filterNmID));
         } catch (HttpClientErrorException.Unauthorized | HttpClientErrorException.TooManyRequests e) {
