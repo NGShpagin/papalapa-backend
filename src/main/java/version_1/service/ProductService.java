@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Null;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import version_1.dto.NewProductDto;
 import version_1.dto.ProductDto;
 import version_1.dto.WBResponseDtos.WBGoodsResponseDto;
@@ -81,10 +82,10 @@ public class ProductService {
 
     public WBItemDto getWbItemByNmId(int filterNmId) {
         try {
-            WBGoodsResponseDto wbGoodsResponseDto = wbProvider.getItemListWithPrice(filterNmId);
+            WBGoodsResponseDto wbGoodsResponseDto = wbProvider.getItemWithPriceByNmId(filterNmId);
             return wbGoodsResponseDto.getData().getListGoods().get(0);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+        } catch (HttpClientErrorException.Unauthorized | HttpClientErrorException.TooManyRequests e) {
+            throw new HttpClientErrorException(e.getStatusCode(), e.getStatusText());
         }
     }
 }

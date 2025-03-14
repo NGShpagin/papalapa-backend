@@ -12,11 +12,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import version_1.dto.NewProductDto;
 import version_1.dto.ProductDto;
 import version_1.dto.ProductShortInfoDto;
-import version_1.dto.WBResponseDtos.WBItemDto;
-import version_1.dto.WBResponseDtos.WBGoodsResponseDto;
 import version_1.model.Product;
 import version_1.repository.ProductRepository;
 import version_1.service.ProductService;
@@ -141,10 +140,10 @@ public class ProductController {
     public ResponseEntity<?> getAllProductsWithPrice(@RequestParam Integer filterNmID) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(productService.getWbItemByNmId(filterNmID));
-        } catch (NoSuchElementException e) {
+        } catch (HttpClientErrorException.Unauthorized | HttpClientErrorException.TooManyRequests e) {
             return new ResponseEntity<>(
-                    new ResponseMessage(HttpStatus.NOT_FOUND.value(), e.getMessage()),
-                    HttpStatus.NOT_FOUND);
+                    new ResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
