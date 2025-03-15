@@ -2,6 +2,7 @@ package version_1.service;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.Null;
+import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,11 @@ import version_1.providers.WBProvider;
 import version_1.repository.ProductCategoryRepository;
 import version_1.repository.ProductRepository;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
+@Log4j2
 @Service
 public class ProductService {
 
@@ -88,4 +92,31 @@ public class ProductService {
             throw new HttpClientErrorException(e.getStatusCode(), e.getStatusText());
         }
     }
+
+    public List<ProductCategory> getAllProducts() {
+        try {
+            List<ProductCategory> productCategoryList = productCategoryRepository.findAll();
+            WBGoodsResponseDto wbGoodsResponseDto = wbProvider.getAllItemsWithPrice();
+            List<WBItemDto> wbItemDtoList = wbGoodsResponseDto.getData().getListGoods();
+            for (ProductCategory productCategory : productCategoryList) {
+                for (Product color : productCategory.getColorList()) {
+                    boolean isFound = false;
+                    for (WBItemDto wbItemDto : wbItemDtoList) {
+                        if (isFound) {
+                            log.info(isFound);
+                            break;
+                        }
+                        else if (Objects.equals(wbItemDto.getVendorCode(), color.getTitle())) {
+                            color.setPrice(wbItemDto.getSizes().get(0).getDiscountedPrice());
+                            isFound = true;
+                        }
+                    }
+                }
+            }
+            return productCategoryList;
+        } catch (HttpClientErrorException.Unauthorized | HttpClientErrorException.TooManyRequests e) {
+            throw new HttpClientErrorException(e.getStatusCode(), e.getStatusText());
+        }
+    }
+
 }

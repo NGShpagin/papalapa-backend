@@ -29,12 +29,13 @@ public class ProductCategoryController {
 
     private final ModelMapper modelMapper = new ModelMapper();
 
-    @CrossOrigin
-    @GetMapping
-    public ResponseEntity<?> getAllCategories() {
-        List<ProductCategory> productCategoryList = productCategoryRepository.findAll();
-        return ResponseEntity.status(HttpStatus.OK).body(productCategoryList.stream().map(category -> modelMapper.map(category, ProductCategoryDto.class)).toList());
-    }
+//    @CrossOrigin
+//    @GetMapping
+//    public ResponseEntity<?> getAllCategories() {
+//        return ResponseEntity.status(HttpStatus.OK).body(productCategoryService.getAllCategories()
+//                .stream()
+//                .map(category -> modelMapper.map(category, ProductCategoryDto.class)).toList());
+//    }
 
     @PostMapping
     public ResponseEntity<?> addNewProductCategory(@RequestBody NewProductCategoryDto newProductCategoryDto) {

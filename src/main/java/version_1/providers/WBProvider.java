@@ -58,4 +58,21 @@ public class WBProvider {
             throw new RuntimeException(e);
         }
     }
+
+    public WBGoodsResponseDto getAllItemsWithPrice() {
+        String authToken = "eyJhbGciOiJFUzI1NiIsImtpZCI6IjIwMjUwMjE3djEiLCJ0eXAiOiJKV1QifQ.eyJlbnQiOjEsImV4cCI6MTc1NzU3NDYzNSwiaWQiOiIwMTk1OGJjNC0wODMyLTczMTItYWUxMS0xOTk2ODc4MmJlNzQiLCJpaWQiOjY3MTk5ODM0LCJvaWQiOjEzNTQ1MjgsInMiOjEwNzM3NDE4MzIsInNpZCI6IjU1NDFmMzdiLWQ4NmYtNDY2My04ZmFmLTlkNjIwOGJjZGQzYSIsInQiOmZhbHNlLCJ1aWQiOjY3MTk5ODM0fQ.DW6xMngXfcUV7oUpK5Jkoc6yJgA4c6FSTuyTi4F5R7zUPJVSKykgZTL3z4Ejlg0i9ouWkYlkLGRhsdxoQst-Fw";
+        try {
+            return webClient
+                    .get()
+                    .uri("https://discounts-prices-api.wildberries.ru/api/v2/list/goods/filter?limit=10")
+                    .header("Authorization", authToken)
+                    .retrieve()
+                    .bodyToMono(WBGoodsResponseDto.class)
+                    .block();
+        } catch (HttpClientErrorException.Unauthorized | HttpClientErrorException.TooManyRequests e) {
+            throw new HttpClientErrorException(e.getStatusCode(), e.getStatusText());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

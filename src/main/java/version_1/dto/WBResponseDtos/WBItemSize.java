@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class WBItemSize {
     Integer sizeId;
     Integer price;
-    Float discountedPrice;
-    Float clubDiscountedPrice;
+    Double discountedPrice;
+    Double clubDiscountedPrice;
     String techSizeName;
 }

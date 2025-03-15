@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import version_1.dto.NewProductDto;
+import version_1.dto.ProductCategoryDto;
 import version_1.dto.ProductDto;
 import version_1.dto.ProductShortInfoDto;
 import version_1.model.Product;
@@ -137,14 +138,18 @@ public class ProductController {
     @Operation(summary = "Get products with price", description = "Получить карточки товара с ценами")
     @GetMapping(path = "/wb-items")
     @CrossOrigin
-    public ResponseEntity<?> getAllProductsWithPrice(@RequestParam(value = "filterNmID") Integer filterNmID) {
+    public ResponseEntity<?> getAllProductsWithPrice(@RequestParam(value = "filterNmID", required = false) Integer filterNmID) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(productService.getWbItemByNmId(filterNmID));
+            if (filterNmID != null)
+                return ResponseEntity.status(HttpStatus.OK).body(productService.getWbItemByNmId(filterNmID));
+            else
+                return ResponseEntity.status(HttpStatus.OK).body(productService.getAllProducts()
+                        .stream()
+                        .map(pproductCategory -> modelMapper.map(pproductCategory, ProductCategoryDto.class)));
         } catch (HttpClientErrorException.Unauthorized | HttpClientErrorException.TooManyRequests e) {
             return new ResponseEntity<>(
                     new ResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()),
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }
