@@ -24,4 +24,7 @@ public class ProductImage {
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
+
+    @Column(name = "position", nullable = true)
+    private Integer position;
 }

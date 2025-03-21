@@ -16,6 +16,7 @@ import version_1.model.ProductCategory;
 import version_1.providers.WBProvider;
 import version_1.repository.ProductCategoryRepository;
 import version_1.repository.ProductRepository;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -70,9 +71,12 @@ public class ProductService {
     }
 
     public Product create(NewProductDto newProductDto) {
-        if (newProductDto.getTitle() == null || newProductDto.getTitle().isEmpty()) throw new RuntimeException("title не может быть пустым");
-        if (newProductDto.getColorName() == null || newProductDto.getColorName().isEmpty()) throw new RuntimeException("colorName не может быть пустым");
-        if (newProductDto.getColorValue() == null || newProductDto.getColorValue().isEmpty()) throw new RuntimeException("colorValue не может быть пустым");
+        if (newProductDto.getTitle() == null || newProductDto.getTitle().isEmpty())
+            throw new RuntimeException("title не может быть пустым");
+        if (newProductDto.getColorName() == null || newProductDto.getColorName().isEmpty())
+            throw new RuntimeException("colorName не может быть пустым");
+        if (newProductDto.getColorValue() == null || newProductDto.getColorValue().isEmpty())
+            throw new RuntimeException("colorValue не может быть пустым");
         try {
             ProductCategory productCategory = productCategoryRepository.findById(newProductDto.getCategory().getId()).orElseThrow();
             Product product = modelMapper.map(newProductDto, Product.class);
@@ -100,15 +104,9 @@ public class ProductService {
             List<WBItemDto> wbItemDtoList = wbGoodsResponseDto.getData().getListGoods();
             for (ProductCategory productCategory : productCategoryList) {
                 for (Product color : productCategory.getColorList()) {
-                    boolean isFound = false;
                     for (WBItemDto wbItemDto : wbItemDtoList) {
-                        if (isFound) {
-                            log.info(isFound);
-                            break;
-                        }
-                        else if (Objects.equals(wbItemDto.getVendorCode(), color.getTitle())) {
+                        if (Objects.equals(wbItemDto.getNmID(), color.getNmId())) {
                             color.setPrice(wbItemDto.getSizes().get(0).getDiscountedPrice());
-                            isFound = true;
                         }
                     }
                 }

@@ -64,7 +64,7 @@ public class WBProvider {
         try {
             return webClient
                     .get()
-                    .uri("https://discounts-prices-api.wildberries.ru/api/v2/list/goods/filter?limit=10")
+                    .uri("https://discounts-prices-api.wildberries.ru/api/v2/list/goods/filter?limit=100")
                     .header("Authorization", authToken)
                     .retrieve()
                     .bodyToMono(WBGoodsResponseDto.class)

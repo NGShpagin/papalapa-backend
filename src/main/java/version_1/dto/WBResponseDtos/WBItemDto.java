@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class WBItemDto {
     // Артикул WB
-    Integer nmID;
+    Long nmID;
     // Артикул продавца
     String vendorCode;
     // Размер

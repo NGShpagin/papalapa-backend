@@ -1,5 +1,11 @@
 server:
-  port: 8280
+  port: 8443
+  ssl:
+    key-store: classpath:keystore/baeldung.p12
+    key-store-password: 627804
+    keyStoreType: PKCS12
+    keyAlias: baeldung
+    enabled=true:
 spring:
 #  local DataBase
 #  datasource:
@@ -16,3 +22,4 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
