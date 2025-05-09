@@ -2,7 +2,6 @@ package version_1.service;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
-import org.hibernate.annotations.OptimisticLock;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,8 +18,6 @@ import version_1.model.Review;
 import version_1.providers.WBProvider;
 import version_1.repository.ProductRepository;
 import version_1.repository.ReviewRepository;
-
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
