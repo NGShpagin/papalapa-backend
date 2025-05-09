@@ -47,8 +47,8 @@ public class ReviewController {
 
     @CrossOrigin
     @GetMapping
-    public ResponseEntity<?> getReviews(@RequestParam(required = false, defaultValue = "1") @Min(1) Integer page,
-                                        @RequestParam(required = false, defaultValue = "3") @Min(1) Integer limit) {
+    public ResponseEntity<?> getReviews(@RequestParam(value = "page", required = false, defaultValue = "1") @Min(1) Integer page,
+                                        @RequestParam(value = "limit", required = false, defaultValue = "3") @Min(1) Integer limit) {
         return ResponseEntity.status(HttpStatus.OK).body(reviewService.getReviewsFromDb(page, limit));
     }
 
@@ -70,7 +70,7 @@ public class ReviewController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<?> deleteReview(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteReview(@PathVariable(value = "id") Integer id) {
         try {
             reviewService.deleteReviewById(id);
             return ResponseEntity.status(HttpStatus.OK).build();

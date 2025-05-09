@@ -55,7 +55,7 @@ public class ProductCategoryController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<?> getCategoryById(@PathVariable Long id) {
+    public ResponseEntity<?> getCategoryById(@PathVariable(value = "id") Long id) {
         try {
             ProductCategory productCategory = productCategoryRepository.findById(id).orElseThrow();
             return ResponseEntity.status(HttpStatus.OK).body(modelMapper.map(productCategory, ProductCategoryDto.class));
@@ -71,7 +71,7 @@ public class ProductCategoryController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<?> deleteCategoryById(@PathVariable Long id) {
+    public ResponseEntity<?> deleteCategoryById(@PathVariable(value = "id") Long id) {
         try {
             productCategoryRepository.findById(id).orElseThrow();
             productCategoryRepository.deleteById(id);

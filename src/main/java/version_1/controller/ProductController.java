@@ -81,9 +81,9 @@ public class ProductController {
             @ApiResponse(responseCode = "404", description = "Product not found",
                     content = @Content)})
     @GetMapping
-    public ResponseEntity<List<ProductShortInfoDto>> getAllProducts(@RequestParam(required = false) String categoryId,
-                                                                    @RequestParam(required = false, defaultValue = "0") int pageNumber,
-                                                                    @RequestParam(required = false, defaultValue = "5") int pageSize) {
+    public ResponseEntity<List<ProductShortInfoDto>> getAllProducts(@RequestParam(value = "categoryId", required = false) String categoryId,
+                                                                    @RequestParam(value = "pageNumber", required = false, defaultValue = "0") int pageNumber,
+                                                                    @RequestParam(value = "pageSize", required = false, defaultValue = "5") int pageSize) {
         List<Product> products;
         if (categoryId == null)
             products = productRepository.findAll(PageRequest.of(pageNumber, pageSize)).getContent();
@@ -114,7 +114,7 @@ public class ProductController {
 
     @Operation(summary = "Update product entire", description = "Обновить изделие целиком")
     @PutMapping(path = "/{id}")
-    public ResponseEntity<?> updateProductEntire(@PathVariable long id, @RequestBody ProductDto product) {
+    public ResponseEntity<?> updateProductEntire(@PathVariable(value = "id") long id, @RequestBody ProductDto product) {
         try {
             product.setId(id);
             Product updatedProduct = productService.updateEntire(product);
@@ -128,7 +128,7 @@ public class ProductController {
 
     @Operation(summary = "Update product partially", description = "Обновить изделие частично")
     @PatchMapping(path = "/{id}")
-    public ResponseEntity<?> updateProductPartially(@PathVariable long id, @RequestBody ProductDto product) {
+    public ResponseEntity<?> updateProductPartially(@PathVariable(value = "id") long id, @RequestBody ProductDto product) {
         try {
             product.setId(id);
             Product updatedProduct = productService.updatePartially(product);
