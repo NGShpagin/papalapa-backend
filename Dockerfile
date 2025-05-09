@@ -1,4 +1,4 @@
-FROM openjdk:23 as image
+FROM openjdk:24 as image
 ADD https://storage.yandexcloud.net/cloud-certs/CA.pem /root/.postgresql/root.crt
 RUN chmod "0644" /root/.postgresql/root.crt
 COPY target/*.jar /app/app.jar
