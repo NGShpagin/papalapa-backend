@@ -13,10 +13,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
-import version_1.dto.NewProductDto;
-import version_1.dto.ProductCategoryDto;
-import version_1.dto.ProductDto;
-import version_1.dto.ProductShortInfoDto;
+import version_1.dto.*;
+import version_1.dto.category.ProductCategoryDto;
+import version_1.dto.product.NewProductDto;
+import version_1.dto.product.ProductDto;
+import version_1.dto.product.ProductShortInfoDto;
 import version_1.model.Product;
 import version_1.repository.ProductRepository;
 import version_1.service.ProductService;
@@ -59,7 +60,7 @@ public class ProductController {
         if (product.isPresent())
             return ResponseEntity.status(HttpStatus.OK).body(modelMapper.map(product, ProductDto.class));
         else return new ResponseEntity<>(
-                new ResponseMessage(HttpStatus.NOT_FOUND.value(), "Изделие с id = " + id + "не найдено"),
+                new ResponseMessageDto(HttpStatus.NOT_FOUND.value(), "Изделие с id = " + id + "не найдено"),
                 HttpStatus.NOT_FOUND);
     }
 
@@ -100,9 +101,13 @@ public class ProductController {
     public ResponseEntity<?> createProduct(@RequestBody NewProductDto newProductDto) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(modelMapper.map(productService.create(newProductDto), ProductDto.class));
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(
+                    new ResponseMessageDto(HttpStatus.NOT_FOUND.value(), e.getMessage()),
+                    HttpStatus.NOT_FOUND);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(
-                    new ResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()),
+                    new ResponseMessageDto(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()),
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -116,7 +121,7 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.OK).body(modelMapper.map(updatedProduct, ProductDto.class));
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(
-                    new ResponseMessage(HttpStatus.NOT_FOUND.value(), e.getMessage()),
+                    new ResponseMessageDto(HttpStatus.NOT_FOUND.value(), e.getMessage()),
                     HttpStatus.NOT_FOUND);
         }
     }
@@ -130,7 +135,7 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.OK).body(modelMapper.map(updatedProduct, ProductDto.class));
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(
-                    new ResponseMessage(HttpStatus.NOT_FOUND.value(), e.getMessage()),
+                    new ResponseMessageDto(HttpStatus.NOT_FOUND.value(), e.getMessage()),
                     HttpStatus.NOT_FOUND);
         }
     }
@@ -148,7 +153,7 @@ public class ProductController {
                         .map(pproductCategory -> modelMapper.map(pproductCategory, ProductCategoryDto.class)));
         } catch (HttpClientErrorException.Unauthorized | HttpClientErrorException.TooManyRequests e) {
             return new ResponseEntity<>(
-                    new ResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()),
+                    new ResponseMessageDto(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()),
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

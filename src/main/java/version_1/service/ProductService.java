@@ -1,14 +1,14 @@
 package version_1.service;
 
 import jakarta.transaction.Transactional;
-import jakarta.validation.constraints.Null;
 import lombok.extern.log4j.Log4j2;
+import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
-import version_1.dto.NewProductDto;
-import version_1.dto.ProductDto;
+import version_1.dto.product.NewProductDto;
+import version_1.dto.product.ProductDto;
 import version_1.dto.WBResponseDtos.WBGoodsResponseDto;
 import version_1.dto.WBResponseDtos.WBItemDto;
 import version_1.model.Product;
@@ -38,22 +38,17 @@ public class ProductService {
     private final ModelMapper modelMapper = new ModelMapper();
 
     @Transactional
-    public Product updateEntire(ProductDto product) {
+    public Product updateEntire(@NotNull ProductDto product) {
         Product changedProduct = productRepository.findById(product.getId())
                 .orElseThrow(() -> new NoSuchElementException("Изделие с id = " + product.getId() + "не найдено"));
         changedProduct.setChangedAt(LocalDateTime.now());
-//        changedProduct.setTitle(product.getTitle());
-//        changedProduct.setQuantity(product.getQuantity());
-//        changedProduct.setCategory(modelMapper.map(product.getCategory(), ProductCategory.class));
         changedProduct.setColorName(product.getColorName());
         changedProduct.setColorValue(product.getColorValue());
-//        changedProduct.setSize(product.getSize());
-//        changedProduct.setComposition(product.getComposition());
         return productRepository.save(changedProduct);
     }
 
     @Transactional
-    public Product updatePartially(ProductDto product) {
+    public Product updatePartially(@NotNull ProductDto product) {
         Product changedProduct = productRepository.findById(product.getId())
                 .orElseThrow(() -> new NoSuchElementException("Изделие с id = " + product.getId() + "не найдено"));
         changedProduct.setChangedAt(LocalDateTime.now());
@@ -70,7 +65,7 @@ public class ProductService {
         return productRepository.save(changedProduct);
     }
 
-    public Product create(NewProductDto newProductDto) {
+    public Product create(@NotNull NewProductDto newProductDto) {
         if (newProductDto.getTitle() == null || newProductDto.getTitle().isEmpty())
             throw new RuntimeException("title не может быть пустым");
         if (newProductDto.getColorName() == null || newProductDto.getColorName().isEmpty())
@@ -78,9 +73,8 @@ public class ProductService {
         if (newProductDto.getColorValue() == null || newProductDto.getColorValue().isEmpty())
             throw new RuntimeException("colorValue не может быть пустым");
         try {
-            ProductCategory productCategory = productCategoryRepository.findById(newProductDto.getCategory().getId()).orElseThrow();
+            ProductCategory productCategory = productCategoryRepository.findById(Long.valueOf(newProductDto.getCategoryId())).orElseThrow();
             Product product = modelMapper.map(newProductDto, Product.class);
-            product.setCreatedAt(LocalDateTime.now());
             product.setCategory(productCategory);
             return productRepository.save(product);
         } catch (NoSuchElementException e) {

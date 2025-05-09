@@ -1,9 +1,12 @@
 package version_1.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OptimisticLockType;
+import org.hibernate.annotations.OptimisticLocking;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,12 +43,14 @@ public class Product {
     /**
      * От какого возраст можно использовать изделие
      */
+    @Min(0)
     @Column(name = "min_age")
     private Integer minAge;
 
     /**
      * До какого возраста можно использовать изделие
      */
+    @Min(1)
     @Column(name = "max_age")
     private Integer maxAge;
 
@@ -76,7 +81,7 @@ public class Product {
     /**
      * Количество / Остаток
      */
-    @Column(name = "quantity")
+    @Column(name = "quantity", columnDefinition = "Количество")
     private Integer quantity;
 
     /**
@@ -100,7 +105,7 @@ public class Product {
     /**
      * Категория изделия
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
     private ProductCategory category;
 

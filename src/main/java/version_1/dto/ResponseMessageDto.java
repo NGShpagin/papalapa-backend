@@ -1,4 +1,4 @@
-package version_1.controller;
+package version_1.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseMessage {
+public class ResponseMessageDto {
     private Integer statusCode;
     private String message;
 }

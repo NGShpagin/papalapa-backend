@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import version_1.dto.BannerDto;
+import version_1.dto.ResponseMessageDto;
 import version_1.model.Image;
 import version_1.model.ImageType;
 import version_1.repository.ImageRepository;
@@ -43,7 +44,7 @@ public class ImageController {
             return ResponseEntity.status(HttpStatus.OK).body(imageRepository.findById(id));
         } catch (Exception e) {
             return new ResponseEntity<>(
-                    new ResponseMessage(HttpStatus.BAD_REQUEST.value(), e.getMessage()),
+                    new ResponseMessageDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()),
                     HttpStatus.BAD_REQUEST);
         }
     }

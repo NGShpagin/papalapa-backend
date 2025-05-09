@@ -1,4 +1,4 @@
-package version_1.dto;
+package version_1.dto.product;
 
 import lombok.Data;
 

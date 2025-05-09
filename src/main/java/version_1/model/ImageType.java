@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
+//@AllArgsConstructor
 public enum ImageType {
     CAROUSEL_BANNER("CAROUSEL_BANNER"),
     SELECT_BANNER("SELECT_BANNER"),
@@ -13,4 +13,8 @@ public enum ImageType {
     COMMON_BANNER("COMMON_BANNER");
 
     private final String title;
+
+    ImageType(String title) {
+        this.title = title;
+    }
 }

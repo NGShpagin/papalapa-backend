@@ -6,6 +6,11 @@ import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OptimisticLockType;
+import org.hibernate.annotations.OptimisticLocking;
+import org.modelmapper.internal.bytebuddy.implementation.bind.annotation.Default;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "review")
@@ -24,13 +29,17 @@ public class Review {
     private String reviewerName;
 
     @Column(name = "rating", nullable = false)
-    @Min(1) @Max(5)
+    @Min(1)
+    @Max(5)
     private Integer rating;
 
     @Column(name = "image_url")
     private String imageUrl;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt = LocalDateTime.now();
 }

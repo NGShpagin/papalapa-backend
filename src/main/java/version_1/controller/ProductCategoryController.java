@@ -7,13 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import version_1.dto.NewProductCategoryDto;
-import version_1.dto.ProductCategoryDto;
+import version_1.dto.category.NewProductCategoryDto;
+import version_1.dto.category.ProductCategoryDto;
+import version_1.dto.ResponseMessageDto;
 import version_1.model.ProductCategory;
 import version_1.repository.ProductCategoryRepository;
 import version_1.service.ProductCategoryService;
 
-import java.util.List;
+import java.util.NoSuchElementException;
 
 @Log4j2
 @RestController
@@ -42,8 +43,14 @@ public class ProductCategoryController {
         try {
             ProductCategory productCategory = productCategoryService.addNew(newProductCategoryDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(modelMapper.map(productCategory, ProductCategoryDto.class));
+         } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(
+                    new ResponseMessageDto(HttpStatus.NOT_FOUND.value(), e.getMessage()),
+                    HttpStatus.NOT_FOUND);
         } catch (RuntimeException e) {
-            throw new RuntimeException(e.getMessage());
+            return new ResponseEntity<>(
+                    new ResponseMessageDto(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -52,22 +59,31 @@ public class ProductCategoryController {
         try {
             ProductCategory productCategory = productCategoryRepository.findById(id).orElseThrow();
             return ResponseEntity.status(HttpStatus.OK).body(modelMapper.map(productCategory, ProductCategoryDto.class));
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(
+                    new ResponseMessageDto(HttpStatus.NOT_FOUND.value(), e.getMessage()),
+                    HttpStatus.NOT_FOUND);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(
-                    new ResponseMessage(HttpStatus.NOT_FOUND.value(), e.getMessage()),
-                    HttpStatus.NOT_FOUND);
+                    new ResponseMessageDto(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> deleteCategoryById(@PathVariable Long id) {
         try {
+            productCategoryRepository.findById(id).orElseThrow();
             productCategoryRepository.deleteById(id);
             return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(
+                    new ResponseMessageDto(HttpStatus.NOT_FOUND.value(), e.getMessage()),
+                    HttpStatus.NOT_FOUND);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(
-                    new ResponseMessage(HttpStatus.NOT_FOUND.value(), e.getMessage()),
-                    HttpStatus.NOT_FOUND);
+                    new ResponseMessageDto(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

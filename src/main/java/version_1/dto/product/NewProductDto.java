@@ -1,6 +1,8 @@
-package version_1.dto;
+package version_1.dto.product;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import version_1.dto.category.ProductCategoryDto;
 
 @Data
 public class NewProductDto {
@@ -16,5 +18,6 @@ public class NewProductDto {
     private Integer quantity;
     private String composition;
     private String size;
-    private ProductCategoryDto category;
+    @NotNull
+    private Integer categoryId;
 }
