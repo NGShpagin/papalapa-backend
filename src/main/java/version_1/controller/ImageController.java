@@ -28,7 +28,7 @@ public class ImageController {
 
     @CrossOrigin
     @GetMapping
-    public ResponseEntity<?> getImageByType(@RequestParam ImageType imageType) {
+    public ResponseEntity<?> getImageByType(@RequestParam(value = "imageType") ImageType imageType) {
         if (imageType == ImageType.CAROUSEL_BANNER) {
             List<Image> carouselBanners = imageRepository.findAllByType(imageType);
             return ResponseEntity.status(HttpStatus.OK).body(carouselBanners.stream().map(banner -> modelMapper.map(banner, BannerDto.class)).toList());
@@ -39,7 +39,7 @@ public class ImageController {
 
     @CrossOrigin
     @GetMapping(path = "/{id}")
-    public ResponseEntity<?> getImageById(@PathVariable long id) {
+    public ResponseEntity<?> getImageById(@PathVariable(value = "id") long id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(imageRepository.findById(id));
         } catch (Exception e) {

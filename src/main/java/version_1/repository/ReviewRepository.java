@@ -18,11 +18,11 @@ public interface ReviewRepository extends JpaRepository<Review, Long>, PagingAnd
     Page<Review> findAll(@NotNull Pageable pageable);
 
     @Query(value = "INSERT INTO review (content, reviewer_name, rating, image_url, product_id, created_at) " +
-            "VALUES (:#{#entity.getContent()}, " +
-            ":#{#entity.getReviewerName()}, " +
-            ":#{#entity.getRating()}, " +
-            ":#{#entity.getImageUrl()}, " +
-            ":#{#entity.getProduct().getId()}, " +
-            ":#{#entity.getCreatedAt()}) returning *", nativeQuery = true)
+            "VALUES (:#{#entity.content}, " +
+            ":#{#entity.reviewerName}, " +
+            ":#{#entity.rating}, " +
+            ":#{#entity.imageUrl}, " +
+            ":#{#entity.product.id}, " +
+            ":#{#entity.createdAt}) returning *", nativeQuery = true)
     Review saveReview(Review entity);
 }
