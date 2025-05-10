@@ -135,8 +135,8 @@
 				<version>3.14.0</version>
 				<configuration>
 					<release>8</release>
-					<source>8</source> <!-- depending on your project -->
-					<target>8</target> <!-- depending on your project -->
+<!--					<source>8</source> &lt;!&ndash; depending on your project &ndash;&gt;-->
+<!--					<target>8</target> &lt;!&ndash; depending on your project &ndash;&gt;-->
 					<annotationProcessorPaths>
 						<path>
 							<groupId>org.projectlombok</groupId>
