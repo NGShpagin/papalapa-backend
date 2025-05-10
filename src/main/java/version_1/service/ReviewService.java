@@ -90,6 +90,7 @@ public class ReviewService {
 
     @Transactional
     public ReviewDto createReview(NewReviewDto newReview) {
+        if (newReview == null) throw new RuntimeException("Body is null");
         try {
             log.info(newReview);
             Product product = productRepository.findById(Long.valueOf(newReview.getItemId())).orElseThrow();
