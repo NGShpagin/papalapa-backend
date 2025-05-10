@@ -15,8 +15,8 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>24</java.version>
-		<maven.compiler.source>${java.version}</maven.compiler.source>
-		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<maven.compiler.source>24</maven.compiler.source>
+		<maven.compiler.target>24</maven.compiler.target>
 	</properties>
 	<repositories>
 		<repository>
@@ -136,9 +136,7 @@
 				<configuration>
 					<source>${java.version}</source> <!-- depending on your project -->
 					<target>${java.version}</target> <!-- depending on your project -->
-					<compilerArgs>
-						<arg>-parameters</arg>
-					</compilerArgs>
+					<compilerArgument>-parameters</compilerArgument>
 					<annotationProcessorPaths>
 						<path>
 							<groupId>org.projectlombok</groupId>
