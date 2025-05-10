@@ -98,7 +98,13 @@ public class ReviewService {
             Review review = modelMapper.map(newReview, Review.class);
             review.setProduct(product);
 //            return reviewRepository.save(review);
-            Review savedReview = reviewRepository.saveReview(review);
+            Review savedReview = reviewRepository.saveReview(
+                    review.getContent(),
+                    review.getReviewerName(),
+                    review.getRating(),
+                    review.getImageUrl(),
+                    review.getProduct().getId(),
+                    review.getCreatedAt());
             return findReviewById(savedReview.getId());
         } catch (NoSuchElementException e) {
             throw new NoSuchElementException(e.getMessage());

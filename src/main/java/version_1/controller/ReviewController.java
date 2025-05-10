@@ -20,7 +20,7 @@ import java.util.NoSuchElementException;
 
 @Slf4j
 @RestController
-@RequestMapping("/papalapa/reviews")
+@RequestMapping(path = "/papalapa/reviews")
 @Tag(name = "Review")
 public class ReviewController {
 
