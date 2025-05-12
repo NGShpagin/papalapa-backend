@@ -8,9 +8,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import version_1.dto.PagingDTO;
 import version_1.dto.WBResponseDtos.WBFeedbackDto;
 import version_1.dto.WBResponseDtos.WBReviewResponseDto;
+import version_1.dto.product.UpdateReviewDto;
 import version_1.dto.review.NewReviewDto;
 import version_1.dto.review.ReviewDto;
 import version_1.model.Product;
@@ -21,6 +23,7 @@ import version_1.repository.ReviewRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Log4j2
 @Service
@@ -88,13 +91,9 @@ public class ReviewService {
         }
     }
 
-    @Transactional
     public ReviewDto createReview(NewReviewDto newReview) {
-        if (newReview == null) throw new RuntimeException("Body is null");
         try {
-            log.info(newReview);
-            Product product = productRepository.findById(Long.valueOf(newReview.getItemId())).orElseThrow();
-            log.info(product.getId());
+            Product product = productRepository.findById(Long.valueOf(newReview.getProductId())).orElseThrow();
             Review review = modelMapper.map(newReview, Review.class);
             review.setProduct(product);
 //            return reviewRepository.save(review);
@@ -113,10 +112,29 @@ public class ReviewService {
         }
     }
 
-    public void deleteReviewById(Integer id) {
+    public void deleteReviewById(Long id) {
         try {
-            reviewRepository.findById(Long.valueOf(id)).orElseThrow();
-            reviewRepository.deleteById(Long.valueOf(id));
+            reviewRepository.findById(id).orElseThrow();
+            reviewRepository.deleteById(id);
+        } catch (NoSuchElementException e) {
+            throw new NoSuchElementException("Отзыв с id=" + id + " не найден");
+        }
+    }
+
+    public ReviewDto updateReview(Long id, UpdateReviewDto updateReviewDto) {
+        boolean isUpdatable = false;
+        try {
+            Review review = reviewRepository.findById(id).orElseThrow();
+            if (updateReviewDto.getContent() != null && !Objects.equals(review.getContent(), updateReviewDto.getContent())) {
+                isUpdatable = true;
+                review.setContent(updateReviewDto.getContent());
+            }
+            if (updateReviewDto.getRating() != null && !Objects.equals(review.getRating(), updateReviewDto.getRating())) {
+                isUpdatable = true;
+                review.setRating(updateReviewDto.getRating());
+            }
+            if (isUpdatable) return modelMapper.map(reviewRepository.save(review), ReviewDto.class);
+            else throw new RuntimeException("Изменений не найдено");
         } catch (NoSuchElementException e) {
             throw new NoSuchElementException("Отзыв с id=" + id + " не найден");
         }

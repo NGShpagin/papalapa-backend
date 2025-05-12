@@ -1,6 +1,7 @@
 package version_1.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class ProductCategoryController {
 //    }
 
     @PostMapping
-    public ResponseEntity<?> addNewProductCategory(@RequestBody NewProductCategoryDto newProductCategoryDto) {
+    public ResponseEntity<?> addNewProductCategory(@Valid @RequestBody NewProductCategoryDto newProductCategoryDto) {
         try {
             ProductCategory productCategory = productCategoryService.addNew(newProductCategoryDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(modelMapper.map(productCategory, ProductCategoryDto.class));

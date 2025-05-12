@@ -16,12 +16,10 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "url")
-    @NotNull
+    @Column(name = "url", nullable = false)
     private String url;
 
-    @Column(name = "type")
-    @NotNull
+    @Column(name = "type", nullable = false)
     private ImageType type;
 
     @Column(name = "position")

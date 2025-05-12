@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -27,7 +28,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/papalapa/products")
+@RequestMapping(path = "/papalapa/products")
 @Tag(name = "Product")
 public class ProductController {
 
@@ -45,7 +46,7 @@ public class ProductController {
      * @param id - идентификатор товара
      * @return полученный товар
      */
-    @Operation(summary = "Get product by its Id")
+    @Operation(summary = "Get product by its Id", description = "Получить продукт по id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the product",
                     content = {@Content(mediaType = "application/json",
@@ -55,7 +56,7 @@ public class ProductController {
             @ApiResponse(responseCode = "204", description = "Product not found",
                     content = @Content)})
     @GetMapping(path = "/{id}")
-    public ResponseEntity<?> getProductById(@PathVariable long id) {
+    public ResponseEntity<?> getProductById(@PathVariable(value = "id") long id) {
         Optional<Product> product = productRepository.findById(id);
         if (product.isPresent())
             return ResponseEntity.status(HttpStatus.OK).body(modelMapper.map(product, ProductDto.class));
@@ -96,9 +97,9 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
 
-    @Operation(summary = "Add new product")
+    @Operation(summary = "Add new product", description = "Добавить новый продукт")
     @PostMapping
-    public ResponseEntity<?> createProduct(@RequestBody NewProductDto newProductDto) {
+    public ResponseEntity<?> createProduct(@Valid @RequestBody NewProductDto newProductDto) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(modelMapper.map(productService.create(newProductDto), ProductDto.class));
         } catch (NoSuchElementException e) {

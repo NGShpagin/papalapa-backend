@@ -1,6 +1,7 @@
 package version_1.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import version_1.dto.ResponseMessageDto;
+import version_1.dto.product.UpdateReviewDto;
 import version_1.dto.review.NewReviewDto;
 import version_1.dto.review.ReviewDto;
 import version_1.model.Review;
@@ -54,9 +56,20 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.OK).body(reviewService.getReviewsFromDb(page, limit));
     }
 
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<?> getReviewById(@PathVariable(value = "id") Long id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(reviewService.findReviewById(id));
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(
+                    new ResponseMessageDto(HttpStatus.NOT_FOUND.value(), e.getMessage()),
+                    HttpStatus.NOT_FOUND);
+        }
+    }
+
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<?> addReview(@RequestBody NewReviewDto newReviewDto) {
+    public ResponseEntity<?> addReview(@Valid @RequestBody NewReviewDto newReviewDto) {
         try {
             ReviewDto review = reviewService.createReview(newReviewDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(review);
@@ -72,10 +85,26 @@ public class ReviewController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<?> deleteReview(@PathVariable(value = "id") Integer id) {
+    public ResponseEntity<?> deleteReview(@PathVariable(value = "id") Long id) {
         try {
             reviewService.deleteReviewById(id);
             return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(
+                    new ResponseMessageDto(HttpStatus.NOT_FOUND.value(), e.getMessage()),
+                    HttpStatus.NOT_FOUND);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(
+                    new ResponseMessageDto(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PatchMapping(path = "/{id}")
+    public ResponseEntity<?> updateReview(@PathVariable(value = "id") Long id, @RequestBody UpdateReviewDto updateReviewDto) {
+        try {
+            ReviewDto reviewDto = reviewService.updateReview(id, updateReviewDto);
+            return ResponseEntity.status(HttpStatus.OK).body(reviewDto);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(
                     new ResponseMessageDto(HttpStatus.NOT_FOUND.value(), e.getMessage()),
